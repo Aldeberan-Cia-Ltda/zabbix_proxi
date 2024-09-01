@@ -1,0 +1,168 @@
+{
+    "services": {
+        "hub_list": {
+            "category_name": "MASTER",
+            "endpoint": "/user/{userId}/hubs",
+            "method": "GET",
+            "output": {
+                "hubId": "hubId"
+            },
+            "output_filter": {
+                "hubBindingRole": "MASTER"
+            }
+        },
+        "device_list": {
+            "method": "GET",
+            "endpoint": "/user/{userId}/hubs/{hubId}/devices",
+            "output": {
+                "deviceId": "id",
+                "deviceType": "deviceType"
+            }
+        },
+        "WallSwitch_info": {
+            "category_name": "WallSwitch",
+            "method": "GET",
+            "service_base": [
+                "hub_list",
+                "device_list"
+            ],
+            "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
+            "interval_readsend": 6,
+            "list_filter": "device_list",
+            "output_filter": {
+                "deviceType": "WallSwitch"
+            }
+        },
+        "Button_info": {
+            "category_name": "Button",
+            "method": "GET",
+            "service_base": [
+                "hub_list",
+                "device_list"
+            ],
+            "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
+            "interval_readsend": 6,
+            "list_filter": "device_list",
+            "output_filter": {
+                "deviceType": "Button"
+            }
+        },
+        "RangeExtender2_info": {
+            "category_name": "RangeExtender2",
+            "method": "GET",
+            "service_base": [
+                "hub_list",
+                "device_list"
+            ],
+            "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
+            "interval_readsend": 6,
+            "list_filter": "device_list",
+            "output_filter": {
+                "deviceType": "RangeExtender2"
+            }
+        },
+        "KeypadPlus_info": {
+            "category_name": "KeypadPlus",
+            "method": "GET",
+            "service_base": [
+                "hub_list",
+                "device_list"
+            ],
+            "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
+            "interval_readsend": 6,
+            "list_filter": "device_list",
+            "output_filter": {
+                "deviceType": "KeypadPlus"
+            }
+        },
+        "MultiTransmitter_info": {
+            "category_name": "MultiTransmitter",
+            "method": "GET",
+            "service_base": [
+                "hub_list",
+                "device_list"
+            ],
+            "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
+            "interval_readsend": 6,
+            "list_filter": "device_list",
+            "output_filter": {
+                "deviceType": "MultiTransmitter"
+            }
+        },
+        "DoorProtect_info": {
+            "category_name": "DoorProtect",
+            "method": "GET",
+            "service_base": [
+                "hub_list",
+                "device_list"
+            ],
+            "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
+            "interval_readsend": 6,
+            "list_filter": "device_list",
+            "output_filter": {
+                "deviceType": "DoorProtect"
+            }
+        },
+        "SpaceControl_info": {
+            "category_name": "SpaceControl",
+            "method": "GET",
+            "service_base": [
+                "hub_list",
+                "device_list"
+            ],
+            "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
+            "interval_readsend": 6,
+            "list_filter": "device_list",
+            "output_filter": {
+                "deviceType": "SpaceControl"
+            }
+        },
+        "HomeSiren_info": {
+            "category_name": "HomeSiren",
+            "method": "GET",
+            "service_base": [
+                "hub_list",
+                "device_list"
+            ],
+            "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
+            "interval_readsend": 6,
+            "list_filter": "device_list",
+            "output_filter": {
+                "deviceType": "HomeSiren"
+            }
+        },
+        "LifeQuality_info": {
+            "category_name": "LifeQuality",
+            "method": "GET",
+            "service_base": [
+                "hub_list",
+                "device_list"
+            ],
+            "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
+            "interval_readsend": 6,
+            "list_filter": "device_list",
+            "output_filter": {
+                "deviceType": "LifeQuality"
+            }
+        },
+        "MotionProtect_info": {
+            "category_name": "MotionProtect",
+            "method": "GET",
+            "service_base": [
+                "hub_list",
+                "device_list"
+            ],
+            "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
+            "interval_readsend": 6,
+            "list_filter": "device_list",
+            "output_filter": {
+                "deviceType": "MotionProtect"
+            }
+        }
+    },
+    "ajax": {
+        "auth_endpoint": "/login",
+        "base_url": "https://api.ajax.systems/api",
+        "user_id": "38395F8B"
+    }
+}

@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  zabbix_connect:
+    build: .
+    container_name: zabbix_connect_container
+    restart: always  # Reinicia el contenedor si falla o si el servidor se apaga
+    env_file:
+      - .env  # Cargar variables de entorno desde el archivo .env
+    ports:
+      - "8080:8080"  # Exponer los puertos según sea necesario
+    volumes:
+      - .:/app  # Mapear el directorio actual al contenedor
+    command: python app.py  # Comando para ejecutar la aplicación
