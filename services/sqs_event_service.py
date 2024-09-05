@@ -17,7 +17,7 @@ class SQSEventService:
         self.visibility_timeout = 30  # seconds
 
         # Instancia de ZabbixManager para enviar eventos a Zabbix
-        self.zabbix_manager = ZabbixManager(zabbix_client)
+        self.zabbix_client =zabbix_client
 
     def receive_messages(self):
         while True:
