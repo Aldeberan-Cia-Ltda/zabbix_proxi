@@ -99,43 +99,47 @@ class ZabbixClient:
         response.raise_for_status()  # Raise an exception for HTTP errors
         return response.json()
 
-    def send_data(self, json_value, category_name):
+    def send_data(self, json_value, category_name, isParse=True):
         headers = {'Content-Type': 'application/json', 'Authorization': f'Bearer {self.auth_token}'}
-        try:
-            host_id = self.get_host_id()
-            items = self.get_items(host_id, category_name)
-
-            # Verificar si el item existe, si no, crearlo
-            if not items:
-                self.create_item(host_id, category_name)
+        if json_value:
+            try:
+                host_id = self.get_host_id()
                 items = self.get_items(host_id, category_name)
 
-            if not items:
-                raise Exception(f"Failed to retrieve or create Zabbix item for category {category_name}")
+                # Verificar si el item existe, si no, crearlo
+                if not items:
+                    self.create_item(host_id, category_name)
+                    items = self.get_items(host_id, category_name)
 
-            """
-            Envía los datos a Zabbix usando zabbix_sender.
-            """
-            # Convertir el JSON en una cadena para enviar a Zabbix
-            value = json.dumps(json_value)
-            
-            # Comando para enviar los datos usando zabbix_sender
-            command = [
-                'zabbix_sender',
-                '-z', self.zabbix_server_ip,
-                '-p', self.zabbix_server_port,
-                '-s', self.host_name,
-                '-k', f'{category_name.lower()}.metric',
-                '-o', value
-            ]
-            print('Comandos de zabix', command)
+                if not items:
+                    raise Exception(f"Failed to retrieve or create Zabbix item for category {category_name}")
 
-            # Ejecutar el comando y capturar la salida
-            
-            result = subprocess.run(command, capture_output=True, text=True)
-            if result.returncode != 0:
-                print(f"Error al enviar datos a Zabbix: {result.stderr}")
-            else:
-                print(f"Datos enviados a Zabbix: {result.stdout}")
-        except Exception as e:
-            print(f"Exception al ejecutar zabbix_sender: {str(e)}")
+                """
+                Envía los datos a Zabbix usando zabbix_sender.
+                """
+                # Convertir el JSON en una cadena para enviar a Zabbix
+                if isParse:
+                    value = json.dumps(json_value)
+                else:
+                    value =json_value
+                
+                # Comando para enviar los datos usando zabbix_sender
+                command = [
+                    'zabbix_sender',
+                    '-z', self.zabbix_server_ip,
+                    '-p', self.zabbix_server_port,
+                    '-s', self.host_name,
+                    '-k', f'{category_name.lower()}.metric',
+                    '-o', value
+                ]
+                print('Comandos de zabix', command)
+
+                # Ejecutar el comando y capturar la salida
+                
+                result = subprocess.run(command, capture_output=True, text=True)
+                if result.returncode != 0:
+                    print(f"Error al enviar datos a Zabbix: {result.stderr}")
+                else:
+                    print(f"Datos enviados a Zabbix: {result.stdout}")
+            except Exception as e:
+                print(f"Exception al ejecutar zabbix_sender: {str(e)}")

@@ -18,7 +18,7 @@ class SQSEventService:
         self.visibility_timeout = 30  # seconds
 
         # Instancia de ZabbixManager para enviar eventos a Zabbix
-        self.zabbix_manager = ZabbixManager(zabbix_client)
+        self.zabbix_client = zabbix_client
 
     def receive_messages(self):
         while True:
@@ -46,7 +46,7 @@ class SQSEventService:
 
         # Enviar el evento a Zabbix
         event_key = "device.event"  # Clave para identificar el evento en Zabbix
-        self.zabbix_client.send_data(event,event_key)
+        self.zabbix_client.send_data(event,event_key, False)
 
     def delete_message(self, receipt_handle):
         self.sqs.delete_message(
