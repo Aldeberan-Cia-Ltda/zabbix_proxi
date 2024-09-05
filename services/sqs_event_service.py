@@ -50,7 +50,7 @@ class SQSEventService:
 
         # Enviar el evento a Zabbix
         event_key = "device.event"  # Clave para identificar el evento en Zabbix
-        self.zabbix_manager.send_data(event, event_key)
+        self.zabbix_client.send_data(event,event_key, False)
 
     def delete_message(self, receipt_handle):
         self.sqs.delete_message(
