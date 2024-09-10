@@ -1,15 +1,12 @@
 {
     "services": {
         "hub_list": {
-            "category_name": "MASTER",
             "endpoint": "/user/{userId}/hubs",
             "method": "GET",
             "output": {
                 "hubId": "hubId"
             },
-            "output_filter": {
-                "hubBindingRole": "MASTER"
-            }
+            "output_filter": {}
         },
         "device_list": {
             "method": "GET",
