@@ -1,5 +1,6 @@
 import sys
 import traceback
+import time
 from threading import Thread
 from services.service_manager import ServiceManager
 from services.sqs_event_service import SQSEventService
@@ -15,32 +16,34 @@ def start_sqs_event_service(zabbix_client):
         traceback.print_exc()
 
 def main():
-    try:
-        # Inicializar el cliente de Zabbix
-        print("Iniciando el cliente de Zabbix...")
-        zabbix_client = ZabbixClient()
+    while True:  # Mantén el proceso en ejecución en un bucle infinito
+        try:
+            # Inicializar el cliente de Zabbix
+            print("Iniciando el cliente de Zabbix...")
+            zabbix_client = ZabbixClient()
 
-        # Iniciar el servicio de eventos SQS en un hilo separado
-        print("Iniciando el servicio de eventos SQS en un hilo separado...")
-        event_service_thread = Thread(target=start_sqs_event_service, args=(zabbix_client,))
-        event_service_thread.start()
+            # Iniciar el servicio de eventos SQS en un hilo separado
+            print("Iniciando el servicio de eventos SQS en un hilo separado...")
+            event_service_thread = Thread(target=start_sqs_event_service, args=(zabbix_client,))
+            event_service_thread.start()
 
-        # Iniciar otros servicios utilizando el ServiceManager
-        print("Iniciando otros servicios utilizando el ServiceManager...")
-        service_manager = ServiceManager(zabbix_client)
-        service_manager.run_services()
+            # Iniciar otros servicios utilizando el ServiceManager
+            print("Iniciando otros servicios utilizando el ServiceManager...")
+            service_manager = ServiceManager(zabbix_client)
+            service_manager.run_services()
 
-        # Esperar a que termine el hilo del servicio de eventos
-        event_service_thread.join()
+            # Esperar a que termine el hilo del servicio de eventos
+            event_service_thread.join()
 
-    except KeyboardInterrupt:
-        print("\nAplicación interrumpida por el usuario. Cerrando...")
-        sys.exit(0)
+        except KeyboardInterrupt:
+            print("\nAplicación interrumpida por el usuario. Cerrando...")
+            sys.exit(0)
 
-    except Exception as e:
-        print("An unhandled exception occurred in the main thread:")
-        traceback.print_exc()
-        sys.exit(1)
+        except Exception as e:
+            print("An unhandled exception occurred in the main thread:")
+            traceback.print_exc()
+            print("Reiniciando servicios en 10 segundos...")
+            time.sleep(10)  # Espera 10 segundos antes de reiniciar la aplicación
 
 if __name__ == '__main__':
     main()
