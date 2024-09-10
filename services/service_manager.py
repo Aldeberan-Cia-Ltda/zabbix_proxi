@@ -9,7 +9,6 @@ class ServiceManager:
         self.zabbix_client = zabbix_client
         self.ajax_service = AjaxService()  # Crear una instancia de AjaxService
         self.services = self.create_services()
-      
 
     def create_services(self):
         services = {}
@@ -29,11 +28,9 @@ class ServiceManager:
             return HubService(service_config, self.ajax_service, self.zabbix_client)
         elif service_name == "device_list":
             return DeviceService(service_config, self.ajax_service, self.zabbix_client)
-        # Añadir más servicios base según sea necesario
 
     def create_continuous_service(self, service_name, service_config):
         return GenericDeviceService(service_config, self.ajax_service, self.zabbix_client)
-
 
     def run_services(self):
         dependency_data = {}
@@ -43,18 +40,10 @@ class ServiceManager:
             service_config = service_data['config']
             dependency = None
             if "interval_readsend" not in service_config:
-                print(f"Ejecutando {service_name}...")
-                
                 if service_name == 'device_list':
                     dependency = dependency_data.get('hub_list')
                 extracted_data = service.run(dependency)
-                print(f"Resultado de {service_name}: {extracted_data}")
-              
                 dependency_data[service_name] = extracted_data
-                
-                print('Dependencias actualizadas:', dependency_data)
-        
-        print("Dependencias finales antes de servicios continuos:", dependency_data)
 
         threads = []
         for service_name, service_data in self.services.items():
@@ -67,8 +56,6 @@ class ServiceManager:
                     }
                 else:
                     service.dependency_data = {}
-
-                print(f"El servicio {service_name} tiene dependencias {service.dependency_data}")
 
                 thread = Thread(target=service.run, args=(service.dependency_data,))
                 threads.append(thread)

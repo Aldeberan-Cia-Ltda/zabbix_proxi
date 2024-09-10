@@ -43,24 +43,26 @@ class DeviceService(BaseService):
 
 class GenericDeviceService(BaseService):
     def fetch_data(self, dependency):
-        # Obtener la lista de hubs y dispositivos desde las dependencias
         hub_list = dependency.get("hub_list", [])
         device_list = dependency.get("device_list", [])
-
-        filtered_devices = []
-
-        # Aplicar list_filter si está presente
-        if 'list_filter' in self.config:
-            list_filter_name = self.config['list_filter']
+        
+        # Si no hay output_filter, usar toda la lista
+        filtered_devices = device_list
+        
+        # Si hay list_filter y output_filter, procesamos los dispositivos en base al filtro
+        if self.list_filter and self.output_filter:
+            list_filter_name = self.list_filter[0]  # Asumiendo que siempre queremos el primero de list_filter
             list_to_filter = dependency.get(list_filter_name, [])
-          
+            
+            # Iteramos sobre el output_filter y list_filter en paralelo
+            filtered_devices = []
+            for idx, filter_key in enumerate(self.output_filter):
+                if idx < len(list_to_filter):
+                    current_filter = {filter_key: self.output_filter[filter_key]}
+                    devices = self.ajax_service.apply_output_filter(list_to_filter[idx], current_filter)
+                    filtered_devices.extend(devices)
 
-            # Aplicar el filtro de la lista
-            filtered_devices = self.ajax_service.apply_output_filter(list_to_filter, self.config.get('output_filter', {}))
-        else:
-            filtered_devices = device_list
-        print('se aplica el filtro', filtered_devices)
-        # Iterar sobre los hubs y dispositivos filtrados para realizar solicitudes
+        # Procesar la lista filtrada y realizar solicitudes
         for hub_data in hub_list:
             hub_id = hub_data.get("hubId")
             if not hub_id:
@@ -78,21 +80,19 @@ class GenericDeviceService(BaseService):
         raise ValueError("No se pudo obtener datos válidos para hub_id o device_id.")
     
     def process_data(self, data):
-        print('esto es self', self.list_filter)
-       
+        # Modularizamos el envío de datos, comprobando que existan elementos a enviar
+        if not data:
+            print("No hay datos procesados para enviar a Zabbix.")
+            return
+
         processed_data = super().process_data(data)
-        print('------------------Esta es la data enviadaa global-------', processed_data)
         category_name = self.config.get('category_name')
         self.zabbix_client.send_data(processed_data, category_name)
-        # for item in processed_data:
-        #     print('------------------Esta es la data enviadaa-------', item)
-        #     category_name = self.config.get('category_name')
-        #     self.zabbix_client.send_data(item, category_name)
+        
         return processed_data
 
     def run(self, dependency):
         while True:
-            
             data = self.fetch_data(dependency)
             self.process_data(data)
-            time.sleep(self.config.get('interval_readsend', 60))
+            time.sleep(self.config.get('interval_readsend', 60))  # Por defecto, cada 60 segundos

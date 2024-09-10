@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   zabbix_connect:
     build: .
