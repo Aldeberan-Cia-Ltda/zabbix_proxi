@@ -29,7 +29,8 @@
             "method": "GET",
             "service_base": [
                 "hub_list",
-                "device_list"
+                "device_list",
+                "room_list"
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
             "interval_readsend": 900,
@@ -52,10 +53,10 @@
                     "serviceBase": "room_list",
                     "typeEmbedded": "comparado",
                     "keyCompared": {
-                        "roomId": "roomId"
+                        "roomId": "id"
                     },
                     "propertiesService": {
-                        "roomId": "id",
+                        "roomId": "roomId",
                         "roomName": "roomName"
                     }
                 }
@@ -66,7 +67,8 @@
             "method": "GET",
             "service_base": [
                 "hub_list",
-                "device_list"
+                "device_list",
+                "room_list"
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
             "interval_readsend": 900,
@@ -75,14 +77,36 @@
             ],
             "output_filter": {
                 "deviceType": "Button"
-            }
+            },
+            "embeddedData": [
+                {
+                    "serviceBase": "hub_list",
+                    "typeEmbedded": "heredado",
+                    "propertiesService": {
+                        "hubId": "hubId",
+                        "hubBindingRole": "hubBindingRole"
+                    }
+                },
+                {
+                    "serviceBase": "room_list",
+                    "typeEmbedded": "comparado",
+                    "keyCompared": {
+                        "roomId": "id"
+                    },
+                    "propertiesService": {
+                        "roomId": "roomId",
+                        "roomName": "roomName"
+                    }
+                }
+            ]
         },
         "RangeExtender2_info": {
             "category_name": "RangeExtender2",
             "method": "GET",
             "service_base": [
                 "hub_list",
-                "device_list"
+                "device_list",
+                "room_list"
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
             "interval_readsend": 900,
@@ -91,14 +115,36 @@
             ],
             "output_filter": {
                 "deviceType": "RangeExtender2"
-            }
+            },
+            "embeddedData": [
+                {
+                    "serviceBase": "hub_list",
+                    "typeEmbedded": "heredado",
+                    "propertiesService": {
+                        "hubId": "hubId",
+                        "hubBindingRole": "hubBindingRole"
+                    }
+                },
+                {
+                    "serviceBase": "room_list",
+                    "typeEmbedded": "comparado",
+                    "keyCompared": {
+                        "roomId": "id"
+                    },
+                    "propertiesService": {
+                        "roomId": "roomId",
+                        "roomName": "roomName"
+                    }
+                }
+            ]
         },
         "KeypadPlus_info": {
             "category_name": "KeypadPlus",
             "method": "GET",
             "service_base": [
                 "hub_list",
-                "device_list"
+                "device_list",
+                "room_list"
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
             "interval_readsend": 900,
@@ -107,14 +153,36 @@
             ],
             "output_filter": {
                 "deviceType": "KeypadPlus"
-            }
+            },
+            "embeddedData": [
+                {
+                    "serviceBase": "hub_list",
+                    "typeEmbedded": "heredado",
+                    "propertiesService": {
+                        "hubId": "hubId",
+                        "hubBindingRole": "hubBindingRole"
+                    }
+                },
+                {
+                    "serviceBase": "room_list",
+                    "typeEmbedded": "comparado",
+                    "keyCompared": {
+                        "roomId": "id"
+                    },
+                    "propertiesService": {
+                        "roomId": "roomId",
+                        "roomName": "roomName"
+                    }
+                }
+            ]
         },
         "MultiTransmitter_info": {
             "category_name": "MultiTransmitter",
             "method": "GET",
             "service_base": [
                 "hub_list",
-                "device_list"
+                "device_list",
+                "room_list"
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
             "interval_readsend": 900,
@@ -123,14 +191,36 @@
             ],
             "output_filter": {
                 "deviceType": "MultiTransmitter"
-            }
+            },
+            "embeddedData": [
+                {
+                    "serviceBase": "hub_list",
+                    "typeEmbedded": "heredado",
+                    "propertiesService": {
+                        "hubId": "hubId",
+                        "hubBindingRole": "hubBindingRole"
+                    }
+                },
+                {
+                    "serviceBase": "room_list",
+                    "typeEmbedded": "comparado",
+                    "keyCompared": {
+                        "roomId": "id"
+                    },
+                    "propertiesService": {
+                        "roomId": "roomId",
+                        "roomName": "roomName"
+                    }
+                }
+            ]
         },
         "DoorProtect_info": {
             "category_name": "DoorProtect",
             "method": "GET",
             "service_base": [
                 "hub_list",
-                "device_list"
+                "device_list",
+                "room_list"
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
             "interval_readsend": 900,
@@ -139,14 +229,36 @@
             ],
             "output_filter": {
                 "deviceType": "DoorProtect"
-            }
+            },
+            "embeddedData": [
+                {
+                    "serviceBase": "hub_list",
+                    "typeEmbedded": "heredado",
+                    "propertiesService": {
+                        "hubId": "hubId",
+                        "hubBindingRole": "hubBindingRole"
+                    }
+                },
+                {
+                    "serviceBase": "room_list",
+                    "typeEmbedded": "comparado",
+                    "keyCompared": {
+                        "roomId": "id"
+                    },
+                    "propertiesService": {
+                        "roomId": "roomId",
+                        "roomName": "roomName"
+                    }
+                }
+            ]
         },
         "SpaceControl_info": {
             "category_name": "SpaceControl",
             "method": "GET",
             "service_base": [
                 "hub_list",
-                "device_list"
+                "device_list",
+                "room_list"
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
             "interval_readsend": 900,
@@ -155,14 +267,36 @@
             ],
             "output_filter": {
                 "deviceType": "SpaceControl"
-            }
+            },
+            "embeddedData": [
+                {
+                    "serviceBase": "hub_list",
+                    "typeEmbedded": "heredado",
+                    "propertiesService": {
+                        "hubId": "hubId",
+                        "hubBindingRole": "hubBindingRole"
+                    }
+                },
+                {
+                    "serviceBase": "room_list",
+                    "typeEmbedded": "comparado",
+                    "keyCompared": {
+                        "roomId": "id"
+                    },
+                    "propertiesService": {
+                        "roomId": "roomId",
+                        "roomName": "roomName"
+                    }
+                }
+            ]
         },
         "HomeSiren_info": {
             "category_name": "HomeSiren",
             "method": "GET",
             "service_base": [
                 "hub_list",
-                "device_list"
+                "device_list",
+                "room_list"
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
             "interval_readsend": 900,
@@ -171,14 +305,36 @@
             ],
             "output_filter": {
                 "deviceType": "HomeSiren"
-            }
+            },
+            "embeddedData": [
+                {
+                    "serviceBase": "hub_list",
+                    "typeEmbedded": "heredado",
+                    "propertiesService": {
+                        "hubId": "hubId",
+                        "hubBindingRole": "hubBindingRole"
+                    }
+                },
+                {
+                    "serviceBase": "room_list",
+                    "typeEmbedded": "comparado",
+                    "keyCompared": {
+                        "roomId": "id"
+                    },
+                    "propertiesService": {
+                        "roomId": "roomId",
+                        "roomName": "roomName"
+                    }
+                }
+            ]
         },
         "LifeQuality_info": {
             "category_name": "LifeQuality",
             "method": "GET",
             "service_base": [
                 "hub_list",
-                "device_list"
+                "device_list",
+                "room_list"
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
             "interval_readsend": 900,
@@ -187,14 +343,36 @@
             ],
             "output_filter": {
                 "deviceType": "LifeQuality"
-            }
+            },
+            "embeddedData": [
+                {
+                    "serviceBase": "hub_list",
+                    "typeEmbedded": "heredado",
+                    "propertiesService": {
+                        "hubId": "hubId",
+                        "hubBindingRole": "hubBindingRole"
+                    }
+                },
+                {
+                    "serviceBase": "room_list",
+                    "typeEmbedded": "comparado",
+                    "keyCompared": {
+                        "roomId": "id"
+                    },
+                    "propertiesService": {
+                        "roomId": "roomId",
+                        "roomName": "roomName"
+                    }
+                }
+            ]
         },
         "MotionProtect_info": {
             "category_name": "MotionProtect",
             "method": "GET",
             "service_base": [
                 "hub_list",
-                "device_list"
+                "device_list",
+                "room_list"
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
             "interval_readsend": 900,
@@ -203,7 +381,28 @@
             ],
             "output_filter": {
                 "deviceType": "MotionProtect"
-            }
+            },
+            "embeddedData": [
+                {
+                    "serviceBase": "hub_list",
+                    "typeEmbedded": "heredado",
+                    "propertiesService": {
+                        "hubId": "hubId",
+                        "hubBindingRole": "hubBindingRole"
+                    }
+                },
+                {
+                    "serviceBase": "room_list",
+                    "typeEmbedded": "comparado",
+                    "keyCompared": {
+                        "roomId": "id"
+                    },
+                    "propertiesService": {
+                        "roomId": "roomId",
+                        "roomName": "roomName"
+                    }
+                }
+            ]
         }
     },
     "ajax": {

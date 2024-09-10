@@ -40,7 +40,25 @@ class DeviceService(BaseService):
         print('Dispositivos extraídos:', results)
         return results
 
+class RoomService(BaseService):
+    def fetch_data(self):
+        results = []
+        print("Dependencia de data en RoomService: ", self.dependency_data)
 
+        # Verificar que la dependencia sea un diccionario con 'hub_list'
+        if isinstance(self.dependency_data, list):
+                for hub_data in self.dependency_data:
+                    hub_id = hub_data.get("hubId")
+                    if hub_id:
+                        response = self.ajax_service.make_request(self.config, hubId=hub_id)
+                        if response:
+                            results.extend(response)
+                       
+        else:
+            print("Advertencia: No se encontró 'hub_list' en la dependencia de RoomService.")
+
+        print('Rooms extraídas:', results)
+        return results
 class GenericDeviceService(BaseService):
     def fetch_data(self, dependency):
         hub_list = dependency.get("hub_list", [])
@@ -72,6 +90,7 @@ class GenericDeviceService(BaseService):
 
                 response = self.ajax_service.make_request(self.config, hubId=hub_id, deviceId=device_id)
                 if response:
+                    response['hubId'] = hub_id
                     return response
 
         raise ValueError("No se pudo obtener datos válidos para hub_id o device_id.")
@@ -89,19 +108,4 @@ class GenericDeviceService(BaseService):
             self.process_data(data)
             time.sleep(self.config.get('interval_readsend', 60))
 
-class RoomService(BaseService):
- 
-    def fetch_data(self):
-        results = []
-        print("Dependencia de data en DeviceService: ", self.dependency_data)
-        
-        if isinstance(self.dependency_data, list):
-            for hub in self.dependency_data["hub_list"]:
-                hub_id = hub.get("hubId")
-                response = self.ajax_service.make_request(self.config, hubId=hub_id)
-                if response:
-                    results.extend(response)
 
-            self.dependency_data = results  # Guardar los resultados en dependencia
-        print('Rooms extraídas:', results)
-        return results
