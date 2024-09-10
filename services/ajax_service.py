@@ -66,8 +66,19 @@ class AjaxService:
             raise Exception(f"Failed to make request to {url}: {response.status_code} - {response.text}")
 
     def apply_output_filter(self, data, output_filter):
-        filtered_data = []
-        for item in data:
-            if all(item.get(key) == value for key, value in output_filter.items()):
-                filtered_data.append(item)
-        return filtered_data
+            """Aplica el filtro de salida si está presente y si el elemento es un diccionario."""
+            if not data:
+                return []
+
+            if not output_filter:
+                return data
+
+            filtered_data = []
+            for item in data:
+                if isinstance(item, dict):
+                    # Aplica el filtro solo a los elementos que son diccionarios
+                    if all(item.get(key) == value for key, value in output_filter.items()):
+                        filtered_data.append(item)
+                else:
+                    print(f"Advertencia: Se esperaba un diccionario, pero se encontró: {type(item)}. Item: {item}")
+            return filtered_data

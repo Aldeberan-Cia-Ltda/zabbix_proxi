@@ -4,7 +4,16 @@
             "endpoint": "/user/{userId}/hubs",
             "method": "GET",
             "output": {
-                "hubId": "hubId"
+                "hubId": "hubId",
+                "hubBindingRole": "hubBindingRole"
+            }
+        },
+        "room_list": {
+            "endpoint": "/user/{userId}/hubs/{hubId}/rooms",
+            "method": "GET",
+            "output": {
+                "roomId": "id",
+                "roomName": "roomName"
             }
         },
         "device_list": {
@@ -24,10 +33,33 @@
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
             "interval_readsend": 900,
-            "list_filter": "device_list",
+            "list_filter": [
+                "device_list"
+            ],
             "output_filter": {
                 "deviceType": "WallSwitch"
-            }
+            },
+            "embeddedData": [
+                {
+                    "serviceBase": "hub_list",
+                    "typeEmbedded": "heredado",
+                    "propertiesService": {
+                        "hubId": "hubId",
+                        "hubBindingRole": "hubBindingRole"
+                    }
+                },
+                {
+                    "serviceBase": "room_list",
+                    "typeEmbedded": "comparado",
+                    "keyCompared": {
+                        "roomId": "roomId"
+                    },
+                    "propertiesService": {
+                        "roomId": "id",
+                        "roomName": "roomName"
+                    }
+                }
+            ]
         },
         "Button_info": {
             "category_name": "Button",
@@ -38,7 +70,9 @@
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
             "interval_readsend": 900,
-            "list_filter": "device_list",
+            "list_filter": [
+                "device_list"
+            ],
             "output_filter": {
                 "deviceType": "Button"
             }
@@ -52,7 +86,9 @@
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
             "interval_readsend": 900,
-            "list_filter": "device_list",
+            "list_filter": [
+                "device_list"
+            ],
             "output_filter": {
                 "deviceType": "RangeExtender2"
             }
@@ -66,7 +102,9 @@
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
             "interval_readsend": 900,
-            "list_filter": "device_list",
+            "list_filter": [
+                "device_list"
+            ],
             "output_filter": {
                 "deviceType": "KeypadPlus"
             }
@@ -80,7 +118,9 @@
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
             "interval_readsend": 900,
-            "list_filter": "device_list",
+            "list_filter": [
+                "device_list"
+            ],
             "output_filter": {
                 "deviceType": "MultiTransmitter"
             }
@@ -94,7 +134,9 @@
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
             "interval_readsend": 900,
-            "list_filter": "device_list",
+            "list_filter": [
+                "device_list"
+            ],
             "output_filter": {
                 "deviceType": "DoorProtect"
             }
@@ -108,7 +150,9 @@
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
             "interval_readsend": 900,
-            "list_filter": "device_list",
+            "list_filter": [
+                "device_list"
+            ],
             "output_filter": {
                 "deviceType": "SpaceControl"
             }
@@ -122,7 +166,9 @@
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
             "interval_readsend": 900,
-            "list_filter": "device_list",
+            "list_filter": [
+                "device_list"
+            ],
             "output_filter": {
                 "deviceType": "HomeSiren"
             }
@@ -136,7 +182,9 @@
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
             "interval_readsend": 900,
-            "list_filter": "device_list",
+            "list_filter": [
+                "device_list"
+            ],
             "output_filter": {
                 "deviceType": "LifeQuality"
             }
@@ -150,7 +198,9 @@
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
             "interval_readsend": 900,
-            "list_filter": "device_list",
+            "list_filter": [
+                "device_list"
+            ],
             "output_filter": {
                 "deviceType": "MotionProtect"
             }
