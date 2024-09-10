@@ -10,3 +10,8 @@ services:
     volumes:
       - .:/app  # Mapear el directorio actual al contenedor
     command: python app.py  # Comando para ejecutar la aplicación
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"  # Mantener un máximo de 3 archivos de logs rotados

@@ -1,13 +1,11 @@
-# Utilizar una imagen base de Python
-FROM python:3.10-slim
+# Utilizar una imagen base más ligera de Alpine
+FROM python:3.10-alpine
 
 # Establecer el directorio de trabajo
 WORKDIR /app
 
 # Instalar dependencias del sistema necesarias, incluido zabbix-sender
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    zabbix-sender \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apk update && apk add --no-cache zabbix-sender
 
 # Copiar el archivo de requisitos y el código de la aplicación
 COPY requirements.txt .
@@ -21,5 +19,5 @@ COPY . .
 # Exponer el puerto que utiliza la aplicación (ajusta según tu configuración)
 EXPOSE 8080
 
-# Establecer las variables de entorno cargadas desde el archivo .env
+# Establecer el comando predeterminado para ejecutar la aplicación
 CMD ["python", "app.py"]

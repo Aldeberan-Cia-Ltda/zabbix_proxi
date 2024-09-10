@@ -33,7 +33,7 @@
                 "room_list"
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
-            "interval_readsend": 900,
+            "interval_readsend": 300,
             "list_filter": [
                 "device_list"
             ],
@@ -71,7 +71,7 @@
                 "room_list"
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
-            "interval_readsend": 900,
+            "interval_readsend": 300,
             "list_filter": [
                 "device_list"
             ],
@@ -109,7 +109,7 @@
                 "room_list"
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
-            "interval_readsend": 900,
+            "interval_readsend": 300,
             "list_filter": [
                 "device_list"
             ],
@@ -147,7 +147,7 @@
                 "room_list"
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
-            "interval_readsend": 900,
+            "interval_readsend": 300,
             "list_filter": [
                 "device_list"
             ],
@@ -185,7 +185,7 @@
                 "room_list"
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
-            "interval_readsend": 900,
+            "interval_readsend": 300,
             "list_filter": [
                 "device_list"
             ],
@@ -223,7 +223,7 @@
                 "room_list"
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
-            "interval_readsend": 900,
+            "interval_readsend": 300,
             "list_filter": [
                 "device_list"
             ],
@@ -261,7 +261,7 @@
                 "room_list"
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
-            "interval_readsend": 900,
+            "interval_readsend": 300,
             "list_filter": [
                 "device_list"
             ],
@@ -299,7 +299,7 @@
                 "room_list"
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
-            "interval_readsend": 900,
+            "interval_readsend": 300,
             "list_filter": [
                 "device_list"
             ],
@@ -337,7 +337,7 @@
                 "room_list"
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
-            "interval_readsend": 900,
+            "interval_readsend": 300,
             "list_filter": [
                 "device_list"
             ],
@@ -375,7 +375,7 @@
                 "room_list"
             ],
             "endpoint": "/user/{userId}/hubs/{hubId}/devices/{deviceId}",
-            "interval_readsend": 900,
+            "interval_readsend": 300,
             "list_filter": [
                 "device_list"
             ],
