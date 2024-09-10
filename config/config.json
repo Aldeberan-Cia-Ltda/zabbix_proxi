@@ -5,8 +5,7 @@
             "method": "GET",
             "output": {
                 "hubId": "hubId"
-            },
-            "output_filter": {}
+            }
         },
         "device_list": {
             "method": "GET",
