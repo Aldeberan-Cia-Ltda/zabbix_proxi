@@ -59,6 +59,7 @@ class RoomService(BaseService):
 
         print('Rooms extraídas:', results)
         return results
+    
 class GenericDeviceService(BaseService):
     def fetch_data(self, dependency):
         hub_list = dependency.get("hub_list", [])
@@ -66,18 +67,30 @@ class GenericDeviceService(BaseService):
 
         filtered_devices = []
 
-        # Aplicar list_filter si está presente
-        if 'list_filter' in self.config:
-            list_filter_name = self.config['list_filter']
-            list_to_filter = dependency.get(list_filter_name[0], [])
+        # Aplicar el list_filter y output_filter en paralelo
+        list_filters = self.config.get('list_filter', [])
+        output_filters = self.config.get('output_filter', {})
 
-            # Aplicar el filtro de la lista
-            filtered_devices = self.ajax_service.apply_output_filter(list_to_filter, self.config.get('output_filter', {}))
+        if list_filters and output_filters:
+            # Aplicar el filtro de salida basado en el índice del filtro de lista
+            for idx, filter_name in enumerate(list_filters):
+                list_to_filter = dependency.get(filter_name, [])
+
+                # Obtener el filtro correspondiente al índice actual en output_filters
+                current_filter = {list(output_filters.keys())[idx]: list(output_filters.values())[idx]}
+
+                # Aplicar el filtro a la lista de dispositivos
+                filtered_subset = self.ajax_service.apply_output_filter(list_to_filter, current_filter)
+                filtered_devices.extend(filtered_subset)
         else:
+            # Si no hay filtros, usar todos los dispositivos
             filtered_devices = device_list
-        
-        print('Se aplica el filtro:', filtered_devices)
 
+        print('Dispositivos filtrados:', filtered_devices)
+
+        all_responses = []
+
+        # Iterar sobre todos los hubs y dispositivos filtrados
         for hub_data in hub_list:
             hub_id = hub_data.get("hubId")
             if not hub_id:
@@ -88,24 +101,42 @@ class GenericDeviceService(BaseService):
                 if not device_id:
                     continue
 
+                # Hacer una solicitud por cada dispositivo filtrado
                 response = self.ajax_service.make_request(self.config, hubId=hub_id, deviceId=device_id)
                 if response:
+                    # Agregar hubId a la respuesta
                     response['hubId'] = hub_id
-                    return response
+                    all_responses.append(response)
 
-        raise ValueError("No se pudo obtener datos válidos para hub_id o device_id.")
-    
+        if not all_responses:
+            raise ValueError("No se pudo obtener datos válidos para hub_id o device_id.")
+        
+        # Devuelve todas las respuestas para ser procesadas
+        return all_responses
+
     def process_data(self, data):
-        processed_data = super().process_data(data)
-        print('------------------Esta es la data enviada globalmente:', processed_data)
+        all_processed_data = []
+        
+        # Procesar cada conjunto de datos recibido
+        for individual_data in data:
+            processed_data = super().process_data(individual_data)
+            all_processed_data.append(processed_data)
+            print('------------------Esta es la data enviada globalmente:', processed_data)
+
         category_name = self.config.get('category_name')
-        self.zabbix_client.send_data(processed_data, category_name)
-        return processed_data
+
+        # Enviar todos los datos procesados a Zabbix
+        for processed in all_processed_data:
+            self.zabbix_client.send_data(processed, category_name)
+
+        return all_processed_data
 
     def run(self, dependency):
         while True:
-            data = self.fetch_data(dependency)
-            self.process_data(data)
-            time.sleep(self.config.get('interval_readsend', 60))
+       
+                # Obtener los datos filtrados
+                data = self.fetch_data(dependency)
+                self.process_data(data)
+                time.sleep(self.config.get('interval_readsend', 60))
 
 
