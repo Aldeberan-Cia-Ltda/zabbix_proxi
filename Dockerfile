@@ -1,11 +1,11 @@
-# Utilizar una imagen base más ligera de Alpine
-FROM python:3.10-alpine
+# Utilizar una imagen base ligera de Debian
+FROM python:3.10-slim
 
 # Establecer el directorio de trabajo
 WORKDIR /app
 
 # Instalar dependencias del sistema necesarias, incluido zabbix-sender
-RUN apk update && apk add --no-cache zabbix-sender
+RUN apt-get update && apt-get install -y --no-install-recommends zabbix-sender
 
 # Copiar el archivo de requisitos y el código de la aplicación
 COPY requirements.txt .
