@@ -403,6 +403,18 @@
                     }
                 }
             ]
+        },
+        "hub_info": {
+            "category_name": "Hub",
+            "method": "GET",
+            "service_base": [
+                "hub_list"
+            ],
+            "endpoint": "/user/{userId}/hubs/{hubId}",
+            "interval_readsend": 300,
+            "list_filter": [],
+            "output_filter": {},
+            "embeddedData": []
         }
     },
     "ajax": {

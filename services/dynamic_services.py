@@ -1,5 +1,20 @@
 from .base_service import BaseService
 import time
+import logging
+
+# Configurar el logger
+logging.basicConfig(
+    level=logging.INFO,  # Nivel de log mínimo (INFO y superior se guardarán)
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',  # Formato de los mensajes
+    handlers=[
+        logging.FileHandler("service_manager.log"),  # Guardar los logs en un archivo
+        logging.StreamHandler()  # Mostrar los logs en la consola
+    ]
+)
+
+# Crear un logger específico para este archivo
+logger = logging.getLogger(__name__)
+
 class HubService(BaseService):
     def fetch_data(self):
         response = self.ajax_service.make_request(self.config)
@@ -139,4 +154,48 @@ class GenericDeviceService(BaseService):
                 self.process_data(data)
                 time.sleep(self.config.get('interval_readsend', 60))
 
+class HubInfoService(BaseService):
+    def fetch_data(self, dependency):
+        hub_list = dependency.get("hub_list", [])
+        print('El listado de hub_list en HubInfo', hub_list)
+        if not hub_list:
+            raise ValueError("No se encontraron hubs en las dependencias HubInfo.")
 
+        results = []
+        for hub_data in hub_list:
+            hub_id = hub_data.get("hubId")
+            if not hub_id:
+                continue
+
+            print(f"Obteniendo información para HubInfo hub_id: {hub_id}")
+            print('Estoy inyenyodo')
+            response = self.ajax_service.make_request(self.config, hubId=hub_id)
+            if response:
+                response['hubId'] = hub_id  # Incluir el hubId en la respuesta
+                results.append(response)
+
+        if not results:
+            raise ValueError("No se obtuvieron datos válidos de los hubs.")
+
+        return results
+
+    def process_data(self, data):
+        if not data:
+            raise ValueError("Los datos proporcionados son None. Verifique la solicitud al servicio.")
+
+        processed_data = super().process_data(data)
+
+        # Enviar datos a Zabbix
+        category_name = self.config.get('category_name', 'Hub')
+        for hub_data in processed_data:
+            print(f"Enviando datos a Zabbix para el hub {hub_data.get('hubId')}")
+            self.zabbix_client.send_data(hub_data, category_name)
+
+        return processed_data
+
+    def run(self, dependency):
+        while True:
+            print(f"Ejecutando HubInfoService con dependencia: {dependency}")
+            data = self.fetch_data(dependency)
+            self.process_data(data)
+            time.sleep(self.config.get('interval_readsend', 300))

@@ -1,8 +1,9 @@
 from threading import Thread
-from .dynamic_services import HubService, DeviceService, GenericDeviceService, RoomService
+from .dynamic_services import HubService, DeviceService, GenericDeviceService, RoomService, HubInfoService
 from config.config import config
 from .ajax_service import AjaxService
 from .shared_state import SharedState  # Importa la clase SharedState
+import time
 
 class ServiceManager:
     def __init__(self, zabbix_client):
@@ -28,12 +29,16 @@ class ServiceManager:
             return HubService(service_config, self.ajax_service, self.zabbix_client)
         elif service_name == "device_list":
             return DeviceService(service_config, self.ajax_service, self.zabbix_client)
-        elif service_name == "room_list":  # Nuevo servicio para obtener las habitaciones
+        elif service_name == "room_list":
             return RoomService(service_config, self.ajax_service, self.zabbix_client)
 
     def create_continuous_service(self, service_name, service_config):
         """Método para crear servicios continuos, es decir, servicios que deben ejecutarse repetidamente en intervalos."""
-        return GenericDeviceService(service_config, self.ajax_service, self.zabbix_client)
+        if service_name == "hub_info":
+            print('Creando servicio continuo: HubInfoService')
+            return HubInfoService(service_config, self.ajax_service, self.zabbix_client)
+        else:
+            return GenericDeviceService(service_config, self.ajax_service, self.zabbix_client)
 
     def run_services(self):
         dependency_data = {}
@@ -45,13 +50,13 @@ class ServiceManager:
             dependency = None
 
             if "interval_readsend" not in service_config:
-                print(f"Ejecutando {service_name}...")
+                print(f"Ejecutando servicio base: {service_name}...")
 
                 if service_name == 'device_list' or service_name == 'room_list':
                     dependency = dependency_data.get('hub_list')
                 
-                # Si room_list depende de hub_list
-                if service_name == 'room_list' and not dependency:
+                # Si room_list o hub_info dependen de hub_list
+                if service_name in ['room_list', 'hub_info'] and not dependency:
                     print(f"Advertencia: {service_name} requiere 'hub_list', pero no está disponible.")
                     continue
 
@@ -61,9 +66,9 @@ class ServiceManager:
                 dependency_data[service_name] = extracted_data
                 print('Dependencias actualizadas:', dependency_data)
 
-        # Asegurarse de que hub_list está disponible antes de room_list
+        # Asegurarse de que hub_list está disponible antes de room_list y hub_info
         if 'hub_list' not in dependency_data:
-            print("Advertencia: No se encontró 'hub_list' antes de ejecutar room_list.")
+            print("Advertencia: No se encontró 'hub_list' antes de ejecutar room_list o hub_info.")
         else:
             print("Hub list cargado correctamente.")
 
@@ -87,7 +92,14 @@ class ServiceManager:
                 if not isinstance(service.dependency_data, dict):
                     raise ValueError(f"El servicio {service_name} recibió una dependencia que no es un diccionario: {type(service.dependency_data)}")
 
-                thread = Thread(target=service.run, args=(service.dependency_data,))
+                # Ejecutar los servicios continuos en intervalos
+                def run_service_with_interval(service_instance, interval, dependencies):
+                    while True:
+                        service_instance.run(dependencies)
+                        time.sleep(interval)
+
+                interval = service_config.get("interval_readsend", 60)
+                thread = Thread(target=run_service_with_interval, args=(service, interval, service.dependency_data))
                 threads.append(thread)
                 thread.start()
 
